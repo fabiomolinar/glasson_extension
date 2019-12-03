@@ -1,11 +1,16 @@
 {
     "name": "Glasson Extension",
     "version": "1.0",
+    "manifest_version": 2,
+    "author": "Fabio Thomaz Molinar",
     "description": "Adds additional features to the Glasson service.",
-    "permissions": ["storage"],
-    "options_page": "options.html",
     "icons": {
         "128": "eyeglass.png"
     },
-    "manifest_version": 2
+    "permissions": ["storage"],
+    "options_page": "options.html",
+    "background": {
+        "scripts": ["background.js"],
+        "persistent": false
+    }
 }
