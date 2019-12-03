@@ -1,15 +1,19 @@
 {
     "name": "Getting Started Example",
-    "description": "Build an Extension!",
     "version": "1.0",
-    "manifest_version": 2,
-    "browser_action": {
-      "default_popup": "main.html",
+    "description": "Build an Extension!",
+    "permissions": ["activeTab", "declarativeContent", "storage"],
+    "background": {
+      "scripts": ["background.js"],
+      "persistent": false
+    },
+    "options_page": "options.html",
+    "page_action": {
+      "default_popup": "popup.html",
       "default_icon": "eyeglass.png"
     },
-    "permissions": ["storage"],
-    "background": {
-        "scripts": ["background.js"],
-        "persistent": false
-    }
+    "icons": {
+        "128": "eyeglass.png"
+    },
+    "manifest_version": 2
 }
