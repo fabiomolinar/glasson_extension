@@ -2,26 +2,29 @@
 <html>
     <head>
         <style>
+            .option {
+                border: 3px;
+                border-style: solid;
+                padding: 1em
+            }
         </style>
     </head>
     <body>
-        <div id="saltOptionsDiv">
-            <p>
-                <input type="text" name="salt" id="salt" placeholder="Klucz">
-            </p>
-            <p>
-                <button id="saveSalt">Zapisz</button>
-            </p>
+        <div id="orderNumberChangerDiv" class="option">
+            <p>Zmieniacz numerow zamowien</p>
+            <button id="orderNumberChangerActivate" disabled>Wlacz</button>
+            <button id="orderNumberChangerDeactivate" disabled>Wylacz</button>
         </div>
-        <div id="messagesDiv" style="display: none">
-            <p id="messages" style="display: none"></p>
+        <div id="keyOptionsDiv" class="option">
+            <p>Klucz do zmieniacza numerow zamowien</p>
+            <div>
+                <input type="text" name="key" id="key" placeholder="Klucz">
+            </div>
+            <div>
+                <button id="saveKey">Zapisz</button>
+            </div>
+            <p id="keyMessages" style="display: none"></p>
         </div>
     </body>
     <script src="options.js"></script>
 </html>
-
-<div>
-    <p>
-
-    </p>
-</div>

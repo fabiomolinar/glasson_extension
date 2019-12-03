@@ -1,42 +1,91 @@
-let saveSalt = document.getElementById("saveSalt");
-let saltInput = document.getElementById("salt");
-let messagesDiv = document.getElementById("messagesDiv");
-let messages = document.getElementById("messages")
+let saveKey = document.getElementById("saveKey");
+let keyInput = document.getElementById("key");
+let keyMessages = document.getElementById("keyMessages");
+let orderNumberChangerEnabled = undefined;
+let orderNumberChangerActivate = document.getElementById("orderNumberChangerActivate")
+let orderNumberChangerDeactivate = document.getElementById("orderNumberChangerDeactivate")
 
-function hideMessage(){
-    messages.textContent = "";
-    messagesDiv.style.display = "none";
-    messages.style.display = "none";
+function hideMessage(el){
+    el.textContent = "";
+    el.style.display = "none";    
 }
 
-function sendMessage(content, level = "info"){
-    messagesDiv.style.display = "block";
-    messages.style.display = "block";
-    messages.textContent = content;
-    setMessageColor(level);
+function sendMessage(el, content, level = "info"){
+    el.style.display = "block";
+    el.textContent = content;
+    setMessageColor(el, level);
 }
 
-function setMessageColor(level = "info"){
+function setMessageColor(el, level = "info"){
     switch(level){
         case "warning":
-            messages.style.color = "red";
+            el.style.color = "red";
             break;
         case "success":
-            messages.style.color = "green";
+            el.style.color = "green";
             break;
         default:
-            messages.style.color = "black";
+            el.style.color = "black";
     }
 }
 
-saveSalt.addEventListener("click", function(){
-    let salt = saltInput.value;
-    if (salt == ""){
-        sendMessage("Wartosc nie moze byc pusta.", "warning");
+function updateNumberOrderChanger(enabled){
+    switch(enabled){
+        case true:
+            orderNumberChangerActivate.style.backgroundColor = "green"
+            orderNumberChangerActivate.textContent = "Wlaczone"
+            orderNumberChangerDeactivate.style.backgroundColor = ""
+            orderNumberChangerDeactivate.textContent = "Wylacz"
+            break;
+        case false:
+            orderNumberChangerActivate.style.backgroundColor = ""
+            orderNumberChangerActivate.textContent = "Wlacz"
+            orderNumberChangerDeactivate.style.backgroundColor = "red"
+            orderNumberChangerDeactivate.textContent = "Wylaczony"
+            break;
+        default:
+            orderNumberChangerActivate.style.backgroundColor = ""
+            orderNumberChangerActivate.textContent = "Wlacz"
+            orderNumberChangerDeactivate.style.backgroundColor = ""
+            orderNumberChangerDeactivate.textContent = "Wylacz"
+    }
+}
+
+saveKey.addEventListener("click", function(){
+    let key = keyInput.value;
+    if (key == ""){
+        sendMessage(keyMessages, "Wartosc nie moze byc pusta.", "warning");
         return
     }
     chrome.storage.sync.set(
-        {salt: salt},
-        sendMessage("Zapisane", "success")
+        {key: key},
+        sendMessage(keyMessages, "Zapisane", "success")
     );
 });
+
+orderNumberChangerActivate.addEventListener("click", function(){
+    chrome.storage.sync.set(
+        {orderNumberChangerEnabled: true},
+        updateNumberOrderChanger(true)
+    );
+});
+
+orderNumberChangerDeactivate.addEventListener("click", function(){
+    chrome.storage.sync.set(
+        {orderNumberChangerEnabled: false},
+        updateNumberOrderChanger(false)
+    );
+});
+
+window.onload = function(){
+    // Read status of orderNumberChanger and update button status
+    chrome.storage.sync.get(
+        ["orderNumberChangerEnabled"],
+        function(results){
+            orderNumberChangerEnabled = results.orderNumberChangerEnabled;
+            updateNumberOrderChanger(orderNumberChangerEnabled);
+            orderNumberChangerActivate.disabled = false;
+            orderNumberChangerDeactivate.disabled = false;
+        }
+    );    
+}

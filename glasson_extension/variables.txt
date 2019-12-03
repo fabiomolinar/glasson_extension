@@ -1,0 +1,2 @@
+key: "asd",                            key used to encrypt the order number
+orderNumberChangerEnabled: true        used to enable the orderNumberChanger
