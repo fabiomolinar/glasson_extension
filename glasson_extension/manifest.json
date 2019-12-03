@@ -1,17 +1,9 @@
 {
-    "name": "Getting Started Example",
+    "name": "Glasson Extension",
     "version": "1.0",
-    "description": "Build an Extension!",
-    "permissions": ["activeTab", "declarativeContent", "storage"],
-    "background": {
-      "scripts": ["background.js"],
-      "persistent": false
-    },
+    "description": "Adds additional features to the Glasson service.",
+    "permissions": ["storage"],
     "options_page": "options.html",
-    "page_action": {
-      "default_popup": "popup.html",
-      "default_icon": "eyeglass.png"
-    },
     "icons": {
         "128": "eyeglass.png"
     },
