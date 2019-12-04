@@ -1,51 +1,47 @@
 // This script will only run once at page load
 let defaultStepNumber = 10;
+let running = false;
+let orderNumber = document.getElementById("sale_order_number");
 
-let checkNumber = function(number){
-    if (
-        isNaN(number) ||
-        typeof number != "number" ||
-        number < 1
-    ){
-        return defaultStepNumber
-    }
-    return number
-}
-
-let encryptNumber = function(secret, key){
-    // secret has to be a number
-    secret = parseInt(secret)
-    let keyList = key.split("/").map(i => parseInt(i));
-    let numberList = [];
-    for (i = 0; i < 5; i++){
-        numberList[i] = checkNumber(keyList[i])
-    }
-    let newNumber = 1 + ((secret + numberList[0])*numberList[1] + numberList[2])*numberList[3] + numberList[4];
-    return newNumber.toString(36).toUpperCase();
+let encryptNumber = function(){
+    let d = new Date()
+    let time = d.getHours().toString() +
+        d.getMinutes().toString() +
+        d.getSeconds().toString();
+    time = parseInt(time);
+    // Radix = 35 to minimize as much as possible the size of the string and to reserve the use of the letter "Z"
+    return time.toString(35).toUpperCase();
 }
 
 let orderNumberChanger = function(enabled, key){
     if (enabled){
-        let orderNumber = document.getElementById("sale_order_number");
-        let originalOrderNumber = orderNumber.value;
+        let originalFullOrderNumber = orderNumber.value;
+        let originalNumber = originalFullOrderNumber.split("/")[3];
         // If somehow the script already ran, don't run again.
-        if (originalOrderNumber[0] == "Z"){
+        if (originalNumber[0] == "Z"){
             return
         }
-        let originalNumber = originalOrderNumber.split("/")[3];
-        let newNumber = "Z" + encryptNumber(originalNumber, key);
-        orderNumber.value = originalOrderNumber.split("/").slice(0,3).join("/") + "/" + newNumber;
+        let newNumber = "Z" + encryptNumber();
+        orderNumber.value = originalFullOrderNumber.split("/").slice(0,3).join("/") + "/" + newNumber;
     }
 }
 
-document.addEventListener("readystatechange", function(){
-    if (document.readyState == "complete"){
-        chrome.storage.sync.get(["orderNumberChangerEnabled"], function(results){
-            let enabled = results.orderNumberChangerEnabled;
-            chrome.storage.sync.get(["key"], function(results){
-                let key = results.key
-                orderNumberChanger(enabled, key);
-            });
-        });
+let main = function(){
+    let path = document.location.pathname
+    if (!path.startsWith("/orders/new")){
+        return
     }
-});
+    
+    console.log("main triggered")
+    chrome.storage.sync.get(["orderNumberChangerEnabled"], function(results){
+        let enabled = results.orderNumberChangerEnabled;
+        chrome.storage.sync.get(["key"], function(results){
+            let key = results.key
+            orderNumberChanger(enabled, key);
+            running = false;
+        });
+    });
+}
+
+// Tired of trying. Going for the ugliest implementation
+window.setInterval(main, 200);
