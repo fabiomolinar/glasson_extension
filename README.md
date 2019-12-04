@@ -46,3 +46,7 @@ An options page and scripts can be used to configure the extension's options. On
     "manifest_version": 2
 }
 ```
+
+### Initialization
+
+THe best place to place initialization code is on a background script inside a `chrome.runtime.onInstalled.addListener`.

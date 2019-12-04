@@ -7,10 +7,20 @@
     "icons": {
         "128": "eyeglass.png"
     },
-    "permissions": ["storage"],
+    "permissions": ["storage", "declarativeContent"],
     "options_page": "options.html",
     "background": {
         "scripts": ["background.js"],
         "persistent": false
-    }
+    },
+    "page_action": {
+        "default_title": "Glasson Extension"
+    },
+    "content_scripts": [
+        {
+            "matches": ["*://*.glasson.pl/orders/new*"],
+            "js": ["orderNumberChanger.js"],
+            "run_at": "document_idle"
+        }
+    ]
 }
