@@ -2,6 +2,10 @@
 
 Chrome extension to add a few functionalities to Glasson service.
 
+## Features
+
+- Changes the order number to hide information about the number of clients served on a given day.
+
 ## Learning
 
 **Sources:**
