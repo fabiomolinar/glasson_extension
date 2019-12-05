@@ -1,6 +1,3 @@
-let saveKey = document.getElementById("saveKey");
-let keyInput = document.getElementById("key");
-let keyMessages = document.getElementById("keyMessages");
 let orderNumberChangerEnabled = undefined;
 let orderNumberChangerActivate = document.getElementById("orderNumberChangerActivate")
 let orderNumberChangerDeactivate = document.getElementById("orderNumberChangerDeactivate")
@@ -50,18 +47,6 @@ function updateNumberOrderChanger(enabled){
             orderNumberChangerDeactivate.textContent = "Wylacz"
     }
 }
-
-saveKey.addEventListener("click", function(){
-    let key = keyInput.value;
-    if (key == ""){
-        sendMessage(keyMessages, "Wartosc nie moze byc pusta.", "warning");
-        return
-    }
-    chrome.storage.sync.set(
-        {key: key},
-        sendMessage(keyMessages, "Zapisane", "success")
-    );
-});
 
 orderNumberChangerActivate.addEventListener("click", function(){
     chrome.storage.sync.set(

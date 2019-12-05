@@ -1,3 +1,10 @@
+# My settings
+
+glasson_extension.pem
+glasson_extension.crx
+
+# --- Standard settings ---
+
 # Logs
 logs
 *.log
